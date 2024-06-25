@@ -43,6 +43,9 @@ from telethon.sessions import StringSession
 from telethon.utils import pack_bot_file_id
 
 from .config import *
+from aiohttp import web
+from plugins.web_support import web_server
+import pyromod
 
 basicConfig(format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=INFO)
 LOGS = getLogger(__name__)
@@ -59,7 +62,13 @@ except Exception as e:
 
 async def startup():
     for x in OWNER.split():
+        app = web.AppRunner(await web_server())
+            await app.setup()       
+            await web.TCPSite(app, "0.0.0.0", 8080).start()
         try:
             await bot.send_message(int(x), "**Bot is Successfully Deployed**")
         except BaseException:
             pass
+               please check the information you give
+            
+Bot().run()
